@@ -40,6 +40,8 @@ def slots_in_window(cfg):
 
 def filter_sizing_months(df, n_months):
     """PRD s0.3: size on the most recent n calendar month(s) present in the data."""
+    if n_months in (None, 'all'):
+        return df.copy()
     ym = df['dt'].dt.year * 100 + df['dt'].dt.month
     keep = sorted(ym.unique())[-n_months:]
     return df[ym.isin(keep)].copy()

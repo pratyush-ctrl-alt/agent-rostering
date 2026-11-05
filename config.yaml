@@ -1,4 +1,5 @@
 input_file: data/raw/Half_Hourly_Support_Data_-_Jun26.xlsx
+agents_file: data/templates/agents_SYNTHETIC_sample.csv
 sheet: result
 
 service_level:
@@ -26,7 +27,7 @@ queue_merges:
 
 exclude_months: [3, 4]
 incident_threshold: 1.8
-sizing_months: 1           # PRD s0.3: size on the most recent month only
+sizing_months: all         # 'all' = every month left after cleaning (Feb+May+Jun blend, chosen by requester); or an int N = last N months
 
 offday_penalty:
   Monday: 1

@@ -1,0 +1,4 @@
+agent_id,name,queues,available_sunday,evening_ok,fixed_day_off
+A001,Ravi K,Default,Y,Y,
+A002,Priya S,Default;Tamil,Y,N,
+A003,Lakshmi R,Tamil;Telugu,N,Y,Sunday
