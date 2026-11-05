@@ -1,0 +1,40 @@
+input_file: data/raw/Half_Hourly_Support_Data_-_Jun26.xlsx
+sheet: result
+
+service_level:
+  target: 0.80
+  threshold_sec: 20
+
+shift_hours: 9
+productive_hours: 7.5
+headcount_cap: 250
+
+shift_windows:
+  - ["09:00", "18:00"]
+  - ["10:00", "19:00"]
+  - ["11:00", "20:00"]
+  - ["12:00", "21:00"]
+
+evening_cutoff: "19:00"   # a shift ending after this is an "evening" shift
+operating_window: ["09:00", "21:00"]
+
+queue_merges:
+  undefined: Default
+  Gujarati: Default
+  Bengali: Default
+  default_mobile: M2D
+
+exclude_months: [3, 4]
+incident_threshold: 1.8
+sizing_months: 1           # PRD s0.3: size on the most recent month only
+
+offday_penalty:
+  Monday: 1
+  Tuesday: 3
+  Wednesday: 3
+  Thursday: 3
+  Friday: 0
+  Saturday: 1
+  Sunday: 0
+
+solver_time_limit_sec: 120

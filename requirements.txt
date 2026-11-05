@@ -1,0 +1,6 @@
+scipy>=1.9
+pandas
+numpy
+openpyxl
+pyyaml
+pytest
