@@ -1,4 +1,36 @@
-# Support Rostering Engine
+# Support Rostering Tool
+
+Two parts: a **web app** (`web/`, deploy on Netlify, nothing is stored or uploaded — everything runs in the
+user's browser) and the original **Python engine** (this folder), kept as the reference implementation.
+The web engine reproduces the Python results exactly on the same inputs (see `web/tests/engine.test.ts`).
+
+## Web app (what ops use)
+Upload call-volume file + agent list → *Generate roster* → review Summary / Roster / Coverage / Gaps / Outbound
+miss curve → hand-edit agents (rules re-check live) → download Roster CSV/XLSX, Coverage XLSX and the Rotation file.
+```bash
+cd web && npm install && npm run dev      # local
+cd web && npm run build                   # production bundle in web/dist
+cd web && npm test                        # parity test (needs data/raw/*.xlsx locally)
+```
+**Deploy:** connect the GitHub repo to Netlify; `netlify.toml` already sets base `web`, build `npm ci && npm run build`,
+publish `dist`. No environment variables, no database. The solver is HiGHS compiled to WebAssembly (`highs` npm package).
+
+**Agent file format (fixed going forward)** — template in `data/templates/agents_template.csv`, also downloadable in the app:
+
+| column | meaning |
+|---|---|
+| `agent_id`, `name` | identity (id must be unique) |
+| `primary_queue` | the agent's main queue: Default, Unpaid_Desktop, M2D, Kannada, Tamil, Telugu, Malayalam, Marathi (Hindi/English/Gujarati/Bengali = Default) |
+| `alternate_queues` | optional, `;`-separated other queues the agent can serve |
+| `available_sunday` | Y/N — N forces Sunday to be their day off |
+| `evening_ok` | Y/N — N bars shifts ending after 19:00 (11–20 and 12–21) |
+| `fixed_day_off` | optional weekday the agent must be off |
+
+Monthly rotation: the app is stateless, so download the *Rotation file* after each run and upload it next month.
+
+---
+
+# Python engine
 
 Monthly roster for named support agents: assigns each agent one queue, one 9-hour shift window
 and one weekly day off so that expected missed calls on last month's demand are minimised.

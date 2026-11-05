@@ -10,13 +10,14 @@ for q, k in plan.items():
         sun = 'N' if random.random() < 0.15 else 'Y'
         eve = 'N' if random.random() < 0.2 else 'Y'
         fixed = random.choice(['Wednesday', 'Saturday']) if (random.random() < 0.04 and sun == 'Y') else ''
-        rows.append([f"S{n:03d}", f"Synthetic Agent {n:03d}", ';'.join(skills), sun, eve, fixed]); n += 1
-hdr = ['agent_id', 'name', 'queues', 'available_sunday', 'evening_ok', 'fixed_day_off']
+        rows.append([f"S{n:03d}", f"Synthetic Agent {n:03d}", skills[0], ';'.join(skills[1:]), sun, eve, fixed]); n += 1
+hdr = ['agent_id', 'name', 'primary_queue', 'alternate_queues', 'available_sunday', 'evening_ok', 'fixed_day_off']
 with open('data/templates/agents_SYNTHETIC_sample.csv', 'w', newline='') as f:
     w = csv.writer(f); w.writerow(hdr); w.writerows(rows)
 with open('data/templates/agents_template.csv', 'w', newline='') as f:
     w = csv.writer(f); w.writerow(hdr)
-    w.writerows([['A001', 'Ravi K', 'Default', 'Y', 'Y', ''],
-                 ['A002', 'Priya S', 'Default;Tamil', 'Y', 'N', ''],
-                 ['A003', 'Lakshmi R', 'Tamil;Telugu', 'N', 'Y', 'Sunday']])
+    w.writerows([['A001', 'Ravi K', 'Default', '', 'Y', 'Y', ''],
+                 ['A002', 'Priya S', 'Tamil', 'Default', 'Y', 'N', ''],
+                 ['A003', 'Lakshmi R', 'Telugu', 'Default;Tamil', 'N', 'Y', ''],
+                 ['A004', 'Example Fixed Off', 'Default', '', 'Y', 'Y', 'Wednesday']])
 print(len(rows), 'synthetic agents')
